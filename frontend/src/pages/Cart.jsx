@@ -23,7 +23,7 @@ const Cart = () => {
     dispatch(removeFromCart(itemId)); // Update Redux state
 
     try {
-      await fetch('http://localhost:5000/cart/remove', {
+      await fetch('https://flipkart-clone-dx5a.vercel.app/cart/remove', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email, itemId })
@@ -41,7 +41,7 @@ const Cart = () => {
     dispatch(updateQuantity({ id: itemId, quantity })); // Update Redux state
 
     try {
-      await fetch('http://localhost:5000/cart/update', {
+      await fetch('https://flipkart-clone-dx5a.vercel.app/cart/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email, itemId, quantity })
