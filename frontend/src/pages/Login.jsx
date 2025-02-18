@@ -17,7 +17,7 @@ const Login = ({ setUser }) => { // Receive setUser from App.js
     setError('');
   
     try {
-      const response = await axios.post('http://localhost:5000/auth', formData);
+      const response = await axios.post('https://flipkart-clone-dx5a.vercel.app/auth', formData);
   
       if (response.data?.user) {  
         localStorage.setItem('user', JSON.stringify(response.data.user)); // Save user data
