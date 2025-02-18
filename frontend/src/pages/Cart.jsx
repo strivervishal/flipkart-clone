@@ -10,7 +10,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:5000/cart?email=${user.email}`)
+      fetch(`https://flipkart-clone-dx5a.vercel.app/cart?email=${user.email}`)
         .then(res => res.json())
         .then(data => setCartItems(data))
         .catch(error => console.error('Error fetching cart:', error));
