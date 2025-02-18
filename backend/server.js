@@ -5,17 +5,24 @@ const bcrypt = require('bcryptjs');
 const cors = require('cors');
 
 const app = express();
-app.use(express.json());
-app.use(cors());
 
-// Connect to MongoDB Atlas
+// ✅ CORS Configuration for Vercel Deployment
+app.use(cors({
+  origin: "*", // Frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type"]
+}));
+
+app.use(express.json());
+
+// ✅ Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
-// User Schema
+// ✅ User Schema
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, unique: true, required: true, lowercase: true, trim: true },
@@ -23,7 +30,7 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('Customer', UserSchema);
 
-// Cart Schema
+// ✅ Cart Schema
 const CartSchema = new mongoose.Schema({
   userEmail: { type: String, required: true },
   items: [
@@ -38,7 +45,7 @@ const CartSchema = new mongoose.Schema({
 });
 const Cart = mongoose.model('Cart', CartSchema);
 
-// Register or Login Route
+// ✅ Register or Login Route
 app.post('/auth', async (req, res) => {
   let { email, password, name } = req.body;
 
@@ -59,8 +66,7 @@ app.post('/auth', async (req, res) => {
       // User does not exist - Register
       if (!name) return res.status(400).json({ message: 'Name is required for registration' });
 
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(password, 10);
       user = new User({ name: name.trim(), email, password: hashedPassword });
       await user.save();
     }
@@ -72,7 +78,7 @@ app.post('/auth', async (req, res) => {
   }
 });
 
-// Get User Info Route
+// ✅ Get User Info Route
 app.get('/user', async (req, res) => {
   try {
     const { email } = req.query;
@@ -88,7 +94,7 @@ app.get('/user', async (req, res) => {
   }
 });
 
-// Add Item to Cart API
+// ✅ Add Item to Cart API
 app.post('/cart/add', async (req, res) => {
   const { email, item } = req.body;
   if (!email || !item) return res.status(400).json({ message: 'Invalid request' });
@@ -115,7 +121,7 @@ app.post('/cart/add', async (req, res) => {
   }
 });
 
-// Get User's Cart API
+// ✅ Get User's Cart API
 app.get('/cart', async (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ message: 'Email is required' });
@@ -129,7 +135,7 @@ app.get('/cart', async (req, res) => {
   }
 });
 
-// Remove Item from Cart API
+// ✅ Remove Item from Cart API
 app.post('/cart/remove', async (req, res) => {
   const { email, itemId } = req.body;
   if (!email || !itemId) return res.status(400).json({ message: 'Invalid request' });
@@ -150,6 +156,7 @@ app.post('/cart/remove', async (req, res) => {
   }
 });
 
-// Start Server
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
