@@ -8,7 +8,7 @@ const app = express();
 
 // ✅ CORS Configuration for Deployment (Allow All Origins Initially)
 app.use(cors({
-  origin: "*", // Allow all origins (change to frontend URL after first deployment)
+  origin: "https://flipkart-clone-frotend.vercel.app", // Allow all origins (change to frontend URL after first deployment)
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"]
 }));
