@@ -6,9 +6,9 @@ const cors = require('cors');
 
 const app = express();
 
-// ✅ CORS Configuration for Vercel Deployment
+// ✅ CORS Configuration for Deployment (Allow All Origins Initially)
 app.use(cors({
-  origin: "*", // Frontend URL
+  origin: "*", // Allow all origins (change to frontend URL after first deployment)
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"]
 }));
@@ -19,8 +19,15 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+}).then(() => {
+  console.log('✅ MongoDB connected');
+  
+  // ✅ Start Server only after MongoDB connection is successful
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`🚀 Backend is running successfully on port ${PORT}`));
+}).catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+});
 
 // ✅ User Schema
 const UserSchema = new mongoose.Schema({
@@ -155,8 +162,3 @@ app.post('/cart/remove', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-// ✅ Start Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
