@@ -11,7 +11,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:5001/cart?email=${user.email}`)
+      fetch(`https://flipkart-clone-79uc.vercel.app/cart?email=${user.email}`)
         .then((res) => res.json())
         .then((data) => setCartItems(data))
         .catch((error) => console.error("Error fetching cart:", error));
@@ -20,17 +20,20 @@ const Cart = () => {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      const response = await fetch("http://localhost:5001/cart/remove", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email, itemId }),
-      });
+      const response = await fetch(
+        "https://flipkart-clone-79uc.vercel.app/cart/remove",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email, itemId }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to remove item");
 
       // Re-fetch updated cart after deletion
       const updatedCartResponse = await fetch(
-        `http://localhost:5001/cart?email=${user.email}`
+        `https://flipkart-clone-79uc.vercel.app/cart?email=${user.email}`
       );
       const updatedCartData = await updatedCartResponse.json();
 
@@ -49,7 +52,7 @@ const Cart = () => {
     dispatch(updateQuantity({ id: itemId, quantity }));
 
     try {
-      await fetch("http://localhost:5001/cart/update", {
+      await fetch("https://flipkart-clone-79uc.vercel.app/cart/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user.email, itemId, quantity }),

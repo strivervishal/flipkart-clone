@@ -6,8 +6,14 @@ const cors = require("cors");
 
 const app = express();
 
-// ✅ CORS Configuration for Deployment (Allow All Origins Initially)
-app.use(cors());
+// ✅ Allow requests from your frontend domain
+app.use(
+  cors({
+    origin: "https://flipkart-clone-umber-phi.vercel.app",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true, // If you're using cookies or authentication
+  })
+);
 
 app.use(express.json());
 

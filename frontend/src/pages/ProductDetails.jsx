@@ -44,11 +44,14 @@ const ProductDetails = () => {
     dispatch(addToCart(item)); // Update Redux state
 
     try {
-      const response = await fetch("http://localhost:5001/cart/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: user.email, item }),
-      });
+      const response = await fetch(
+        "https://flipkart-clone-79uc.vercel.app/cart/add",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email, item }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add item to cart");
