@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addToCart } from '../store/cartSlice';
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cartSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const ProductDetails = () => {
         const data = await response.json();
         setProduct(data);
       } catch (error) {
-        console.error('Error fetching product:', error);
+        console.error("Error fetching product:", error);
       } finally {
         setLoading(false);
       }
@@ -26,10 +26,10 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
 
     if (!user) {
-      alert('Please log in first to add items to your cart!');
+      alert("Please log in first to add items to your cart!");
       return;
     }
 
@@ -38,26 +38,26 @@ const ProductDetails = () => {
       name: product.title,
       image: product.image,
       price: product.price,
-      quantity: 1
+      quantity: 1,
     };
 
     dispatch(addToCart(item)); // Update Redux state
 
     try {
-      const response = await fetch('http://localhost:5000/cart/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user.email, item })
+      const response = await fetch("http://localhost:5001/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: user.email, item }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to add item to cart');
+        throw new Error("Failed to add item to cart");
       }
 
-      alert('Item added to cart successfully!');
+      alert("Item added to cart successfully!");
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart. Please try again.');
+      console.error("Error adding to cart:", error);
+      alert("Failed to add item to cart. Please try again.");
     }
   };
 
@@ -115,7 +115,9 @@ const ProductDetails = () => {
             <h2 className="text-lg font-medium mb-3">Highlights</h2>
             <ul className="list-disc list-inside space-y-2">
               <li className="text-gray-600">Category: {product.category}</li>
-              <li className="text-gray-600">Rating: {product.rating.rate} / 5</li>
+              <li className="text-gray-600">
+                Rating: {product.rating.rate} / 5
+              </li>
             </ul>
           </div>
 
